@@ -1,0 +1,16 @@
+.desc {
+    font-family: 'Quicksand', cursive;
+    text-align: center
+
+}
+
+.title {
+    font-family: 'Pacifico', cursive;
+    text-decoration: none;
+    text-align: center}
+.
+project{
+    margin: auto;
+    border: 1px solid $FF00FF
+    margin: 100px;
+}
