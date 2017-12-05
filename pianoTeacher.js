@@ -1,15 +1,22 @@
 
-class pianoTeacher{
+class bugyv{
   constructor(){
     this.keyVal = new Array();
     this.keyPressed = new Array();
     for ( var i=0;i<12;i++){this.keyVal.push(0)};
     this.beat = 0;
     this.notes = 0;
-    var c = document.getElementById("pianoTeacher");
+    var c = document.getElementById("bugyv");
     this.ctx = c.getContext("2d");
     this.time = 0;
-    
+
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext);
+    this.sine = this.audioCtx.createOscillator();
+    this.gainNode = this.audioCtx.createGain();
+    this.sine.connect(this.gainNode);
+    this.sine.start();
+    this.gainNode.connect(this.audioCtx.destination);
+
   }
 
     log( key, time ){
@@ -73,12 +80,16 @@ class pianoTeacher{
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(970,310,120,210);break;
         }
-        
+
+
+    }
+    generateNote(freq){
+      this.note = new Note(freq,this.keyVal[this.key],this.time);
+      this.sine.frequency.value = freq;
 
     }
     updatePiano(key,time){
         this.keyVal[key]=!this.keyVal[key];
-        this.time = time;
         this.ctx.fillStyle = 'rgb(200,30,30)';
         switch ( key ){
             case 0:
@@ -86,6 +97,7 @@ class pianoTeacher{
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(115,310,110,210);
                 this.ctx.fillStyle = 'red';
+                this.generateNote(261);
                 break;
             case 2:
                 this.ctx.fillRect(171,310,170,310);
@@ -93,47 +105,68 @@ class pianoTeacher{
                 this.ctx.fillRect(115,310,110,210);
                 this.ctx.fillRect(285,310,120,210);
                 this.ctx.fillStyle = 'red';
+                this.generateNote(293);
                 break;
             case 4:
                 this.ctx.fillRect(342,310,170,310);
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(285,310,120,210);
-                this.ctx.fillStyle = 'red';break;
+                this.ctx.fillStyle = 'red';
+                this.generateNote(329);
+                break;
             case 5:
                 this.ctx.fillRect(513,310,170,310);
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(630,310,120,210);
-                this.ctx.fillStyle = 'red';break;
+                this.ctx.fillStyle = 'red';
+                this.generateNote(349);
+                break;
             case 7:
                 this.ctx.fillRect(684,310,170,310);
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(630,310,120,210);
                 this.ctx.fillRect(800,310,120,210);
-                this.ctx.fillStyle = 'red';break;
+                this.ctx.fillStyle = 'red';
+                this.generateNote(415);
+                break;
             case 9:
                 this.ctx.fillRect(855,310,170,310);
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(970,310,120,210);
                 this.ctx.fillRect(800,310,120,210);
-                this.ctx.fillStyle = 'red';break;
+                this.ctx.fillStyle = 'red';
+                this.generateNote(440);
+                break;
             case 11:
                 this.ctx.fillRect(1026,310,170,310);
                 this.ctx.fillStyle = 'black';
                 this.ctx.fillRect(970,310,120,210);
-                this.ctx.fillStyle = 'red';break;
+                this.ctx.fillStyle = 'red';
+                this.generateNote(492);
+                break;
             case 1:
 
-                this.ctx.fillRect(115,310,120,210);break;
+                this.ctx.fillRect(115,310,120,210);
+                this.generateNote(277);
+                break;
             case 3:
-                this.ctx.fillRect(285,310,120,210);break;
+                this.ctx.fillRect(285,310,120,210);
+                this.generateNote(311);
+                break;
             case 6:
-                this.ctx.fillRect(630,310,120,210);break;
+                this.ctx.fillRect(630,310,120,210);
+                this.generateNote(392);
+                break;
             case 8:
-                this.ctx.fillRect(800,310,120,210);break;
+                this.ctx.fillRect(800,310,120,210);
+                this.generateNote(415);
+                break;
             case 10:
-                this.ctx.fillRect(970,310,120,210);break;
+                this.ctx.fillRect(970,310,120,210);
+                this.generateNote(466);
+                break;
         }
-        
+
     }
     initPiano(){
         this.ctx.fillStyle = 'rgb(0, 60, 180)';
@@ -163,6 +196,14 @@ class pianoTeacher{
         this.ctx.fillRect(800,310,110,210);
         this.ctx.fillRect(970,310,110,210);
     }
-    
+
+
 }
 
+class Note {
+  constructor(freq,note,time) {
+    this.note = note;
+    this.frequency = freq;
+    this.time = time;
+  }
+}
