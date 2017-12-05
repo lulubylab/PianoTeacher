@@ -3,19 +3,53 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css"href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Pacifico|Quicksand" rel="stylesheet">
-    <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
-
+    <script src="pianoTeacher.js" type ="text/javascript">
+            </script>
   </head>
-  <body>
+  <body >
     <div class ="project">
       <h1 class = "title" > Piano Teacher </h1>
       <canvas id="pianoTeacher" width = "1410" height ="620">
       </canvas>
-      <script src="pianoTeacher.js" type ="text/javascript">
-      </script>
+
       <script>
-      var teacher = new pianoTeacher();
+          function keyCodeToNote(code){
+              switch(code){
+              case 65:
+              return 0;
+              case 87:
+              return 1;
+              case 83:
+              return 2;
+              case 69:
+              return 3;
+              case 68:
+              return 4;
+              case 70:
+              return 5;
+              case 84:
+              return 6;
+              case 71:
+              return 7;
+              case 89:
+              return 8;
+              case 72:
+              return 9;
+              case 85:
+              return 10;
+              case 74:
+              return 11;
+              default:
+              return 13;
+              
+          }
+        }
+      var guy = new pianoTeacher();
+      guy.initPiano();
+      this.document.onkeydown = function(event) {
+          guy.updatePiano(keyCodeToNote(event.keyCode),event.timeStamp)};
+      this.document.onkeyup = function(event) { guy.log(keyCodeToNote(event.keyCode),event.timeStamp) };
+
       </script>
       <p class="desc">
         The first project that I will create teaches you how to easily play the piano.
