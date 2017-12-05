@@ -1,16 +1,27 @@
+body{
+    background: linear-gradient(to bottom right, #0FFF00, #00FFF0);
+    background-
+    
+}
 .desc {
-    font-family: 'Quicksand', cursive;
+    font-family:  cursive;
     text-align: center
 
 }
 
 .title {
-    font-family: 'Pacifico', cursive;
+    font-family: cursive;
     text-decoration: none;
     text-align: center}
 .
 project{
     margin: auto;
-    border: 1px solid $FF00FF
+    border: 1px solid #0F000F
     margin: 100px;
+
 }
+
+#pianoTeacher{
+    border:1px solid #000000;
+}
+
