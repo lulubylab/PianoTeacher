@@ -1,4 +1,47 @@
+function freq(note){
+  switch ( note) {
+    case 0:
+    return 130;
+    break;
+    case 1:
+    return 138;
+    break;
+    case 2:
+    return 146;
+    break;
+    case 3:
+    return 155;
+    break;
+    case 4:
+    return 164;
+    break;
+    case 5:
+    return 174;
+    break;
+    case 6:
+    return 185;
+    break;
+    case 7:
+    return 196;
+    break;
+    case 8:
+    return 207;
+    break;
+    case 9:
+    return 220;
+    break;
+    case 10:
+    return 233;
+    break;
+    case 11:
+    return 246;
+    break;
+    default:
+    return 0;
 
+  }
+
+}
 class bugyv{
   constructor(){
     this.keyPressed = new Array();
@@ -7,114 +50,107 @@ class bugyv{
     this.frequency = 0;
     var c = document.getElementById("bugyv");
     this.ctx = c.getContext("2d");
-    this.time = 0;
     this.warmth=0;
-    this.gainValue =0;
     this.chords = new Array();
     this.isPlaying = false;
-    this.switch1 = false;
-    this.switch2 = false;
+
     this.sampler = new Sampler();
     this.oscMatrix = new Array();
-
+    this.gainMatrix = new Array();
 
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext);
-    this.gainNode = this.audioCtx.createGain();
-    this.gainNode.gain.value = 0;
 
-    for ( var i = 0; i < 12; i++){
+
+    for ( var i = 0; i < 4; i++){
       this.oscMatrix.push( this.audioCtx.createOscillator() );
-      this.oscMatrix[i].connect(this.gainNode);
       this.oscMatrix[i].start();
       this.oscMatrix[i].frequency.value = 0;
+      this.gainMatrix.push (this.audioCtx.createGain());
+      this.gainMatrix[i].gain.value = 0;
+      this.oscMatrix[i].connect(this.gainMatrix[i]);
+      this.gainMatrix[i].connect(this.audioCtx.destination);
     }
 
 
-    this.gainNode.connect(this.audioCtx.destination);
     this.settings = new Array();
 
     }
 
     log( key, time ){
-      this.switch2 = true;
       this.sampler.sample(key,time);
-      if ( this.sampler.offset(key,time) ){
+      if ( this.sampler.offset(key) ){
         this.chords.pop();
         if (this.chords.length ==0) {
-          this.gainNode.gain.value =0;
         }
         this.chords.push(new Sound(this.notes[this.notes.length-1],time));
         this.sampler.chordSwitch(time);
       }
-        this.time = time;
-        this.switch2=false;
-        this.oscMatrix[key].frequency.value =0;
+      console.log(freq(key));
+      if ( freq(key) == this.oscMatrix[0].frequency.value){
+        this.gainMatrix[0].gain.value = 0;
+      }
+      if ( freq(key) == this.oscMatrix[1].frequency.value){
+        this.gainMatrix[1].gain.value = 0;
+      }
+      if ( freq(key) == this.oscMatrix[2].frequency.value){
+        this.gainMatrix[2].gain.value = 0;
+      }
+      if ( freq(key) == this.oscMatrix[3].frequency.value){
+        this.gainMatrix[3].gain.value = 0;
+      }
 
     }
-    makeSound(note,freq){
-        this.oscMatrix[note].frequency.value =freq;
+    makeSound(note){
+        if ( this.gainMatrix[0].gain.value == 1){
+          if (this.gainMatrix[1].gain.value == 1){
+            if (this.gainMatrix[2].gain.value == 1){
+              if (this.gainMatrix[3].gain.value == 1){
+                console.log('too many voices');
+              }
+              else {
+                    this.gainMatrix[3].gain.value = 1;
+                    this.oscMatrix[3].frequency.value = freq(note);
+                  }
+                }
+            else{
+              this.gainMatrix[2].gain.value = 1;
+              this.oscMatrix[2].frequency.value = freq(note);
+            }
+          }
+          else {
+            this.gainMatrix[1].gain.value = 1;
+            this.oscMatrix[1].frequency.value = freq(note);
+          }
+        }
+        else {
+          this.gainMatrix[0].gain.value = 1;
+          this.oscMatrix[0].frequency.value = freq(note);
+        }
+      }
 
-    }
-    generateNote(freq,time, note){
-      this.gainNode.gain.value =1;
-      this.notes.push( new Note(freq,note,this.time));
+
+
+    generateNote(time, note){
+      this.notes.push( new Note(note,time));
       if ( this.chords.length == 0 ){
         this.chords.push(new Sound(this.notes[this.notes.length-1],time));
       }
       else{
         this.chords[this.chords.length-1].addNote(this.notes[this.notes.length-1]);
       }
-      this.makeSound(note,freq);
-
+      if (note < 12){
+      this.makeSound(note);
+}
 
     }
     updatePiano(key,time){
-        this.switch1=true;
         this.sampler.sample(key,time);
         if (key == this.sampler.lastSample(-1)){
           return;
         }
-
+        this.generateNote(time,key);
         this.ctx.fillStyle = 'rgb(200,30,30)';
-        switch ( this.sampler.lastSample(0) ){
-            case 0:
-                this.generateNote(261,time,0);
-                break;
-            case 2:
-                this.generateNote(293,time,2);
-                break;
-            case 4:
-                this.generateNote(329,time,4);
-                break;
-            case 5:
-                this.generateNote(349,time,5);
-                break;
-            case 7:
-                this.generateNote(415,time,7);
-                break;
-            case 9:
-                this.generateNote(440,time,9);
-                break;
-            case 11:
-                this.generateNote(492,time,11);
-                break;
-            case 1:
-                this.generateNote(277,time,1);
-                break;
-            case 3:
-                this.generateNote(311,time,3);
-                break;
-            case 6:
-                this.generateNote(392,time,6);
-                break;
-            case 8:
-                this.generateNote(415,time,8);
-                break;
-            case 10:
-                this.generateNote(466,time,10);
-                break;
-        }
-        this.switch1=false;
+
 
     }
     initPiano(){
@@ -177,9 +213,7 @@ class Sound {
   addNote(note){
     this.s.push(note);
   }
-  frequency(){
-      return this.s[this.s.length-1].getFreq();
-  }
+
 
   getRoot(){
     return this.root;
@@ -194,9 +228,7 @@ class Note {
     this.freq = freq;
     this.time = time;
   }
-  getFreq(){
-    return this.freq;
-  }
+
 }
 
 class Sampler{
@@ -219,14 +251,13 @@ class Sampler{
     this.times.push(time);
     this.keys.push(key);
   }
-  offset(key,time){
+  offset(key){
     var cut = this.size-12;
     if ( cut < 0 ){
       cut = 0;
     }
-    for ( var i = this.size-1,  j = this.size-1 ; i --,j--; i > cut,j>cut){
+    for ( var i = this.size-1 ; i --; i > cut){
       if ( key == this.keys[i] ){
-
         return true;
       }
     }
