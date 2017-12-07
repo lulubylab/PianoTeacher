@@ -1,27 +1,67 @@
 body{
-    background: linear-gradient(to bottom right, #0FFF00, #00FFF0);
-    background-
-    
+  font-family:"Lucida Sans Unicode", "Lucida Grande", serif;
 }
-.desc {
-    font-family:  cursive;
-    text-align: center
+.home{
+  background: linear-gradient(to bottom right, #0FFF00, #00FFF0);
+
 
 }
+.about{
+  background: linear-gradient(to bottom right, #00F0F0, #FFFFFF);
 
+}
+.projects{
+  background: linear-gradient(to bottom right,#0FFF00, #00FFF0);
+
+}
+h1{
+  margin-left:50px;
+
+}
+h2{
+  font-style: italic;
+  margin-left:50px;
+
+}
+.logo{
+  float: right;
+
+}
 .title {
-    font-family: cursive;
     text-decoration: none;
     text-align: center}
-.
-project{
+.project{
     margin: auto;
     border: 1px solid #0F000F
     margin: 100px;
 
 }
-
-#pianoTeacher{
-    border:1px solid #000000;
+p{
+  margin-left: 50px;
 }
 
+ul{
+  margin: 50px;
+  padding:0px;
+  list-style: none;
+  width: 1200;
+
+}
+
+ul li{
+  display:inline;
+  text-decoration: none;
+  padding 5px 0;
+  width: 200px;
+  background: #0AA0FF;
+  float:left;
+  font-size: 30px;
+  text-align: center;
+}
+a {
+  text-decoration:none;
+
+}
+.nav a:hover{
+  color:#0f0f0F;
+}
