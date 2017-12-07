@@ -1,0 +1,61 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css"href="style.css">
+    <script src="bugyv.js" type ="text/javascript">
+            </script>
+  </head>
+  <body class='projects'>
+    <ul>
+      <li> <a class = 'nav' href ='index.html'>Home</a> </li>
+      <li> <a class = 'nav' href ='about.html'>About</a> </li>
+      <li> <a class = 'nav' href ='projects.html'>Projects</a> </li>
+      <li> <a class = 'nav' href ='contact.html'>Contact</a> </li>
+    </ul>
+
+    <div class ="project">
+      <h1 class = "title" > Bugy V </h1>
+      <canvas id="bugyv" width = "1410" height ="620">
+      </canvas>
+
+      <script>
+          function keyCodeToNote(code){
+              switch (code){
+              case 65:
+              return 0;
+              case 87:
+              return 1;
+              case 83:
+              return 2;
+              case 69:
+              return 3;
+              case 68:
+              return 4;
+              case 70:
+              return 5;
+              case 84:
+              return 6;
+              case 71:
+              return 7;
+              case 89:
+              return 8;
+              case 72:
+              return 9;
+              case 85:
+              return 10;
+              case 74:
+              return 11;
+              default:
+              return 13;
+
+          }
+        }
+      var bugy = new bugyv();
+      this.document.onkeydown = function(event) {
+          bugy.updatePiano(keyCodeToNote(event.keyCode),event.timeStamp)};
+      this.document.onkeyup = function(event) { bugy.log(keyCodeToNote(event.keyCode),event.timeStamp) };
+      </script>
+    </div>
+  </body>
+</html>
