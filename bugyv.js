@@ -72,7 +72,7 @@ class bugyv{
     this.real[1] = .15;
     this.imag[1] = .65;
 
-    wave = this.audioCtx.createPeriodicWave(this.real,this.imag);
+    this.wave = this.audioCtx.createPeriodicWave(this.real,this.imag);
 
     for ( var i = 0; i < 4; i++){
       this.oscMatrix.push( this.audioCtx.createOscillator() );
